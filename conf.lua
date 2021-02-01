@@ -1,4 +1,4 @@
-SCALING_FACTOR = 4
+SCALING_FACTOR = 5
 
 function love.conf(t)
   t.identity = nil -- save directory (string)
