@@ -51,7 +51,7 @@ function mainMenu.draw( ... )
       BUTTON_HEIGHT
     )
   end
-  love.graphics.print("CREDITS", 160, BUTTON_1_Y + 50)
+  love.graphics.print("CREDITS", 165, BUTTON_1_Y + 50)
 
   if selectedButton == 2 then
     love.graphics.rectangle(
