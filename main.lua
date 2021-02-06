@@ -1,34 +1,23 @@
-local colors = require 'colors'
-local utils = require 'utils'
-local soundManager = require 'soundManager'
+local sceneManager = require 'src/sceneManager'
 
 local defaultFont = love.graphics.newFont(
   'assets/fonts/EffortsPro.ttf', 36
 )
 
-local sound = love.audio.newSource("assets/sfx/hit5.wav", "static")
-
 function love.load( ... )
   love.graphics.setFont(defaultFont)
+  sceneManager.changeScene(require 'src/mainMenu')
 end
 
-function love.update( dt )
-  -- body
+
+function love.update(dt)
+  sceneManager.currentScene.update(dt)
 end
 
-function love.draw( ... )
-  utils.clearScreen()
-
-  love.graphics.setColor(colors.black)
-  love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 0, 10)
+function love.draw()
+  sceneManager.draw()
 end
 
 function love.keypressed(key)
-  if key == 'space' then
-    soundManager.playSound(sound)
-  end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
+  sceneManager.currentScene.keypressed(key)
 end
