@@ -9,7 +9,10 @@ local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 local changeSound = love.audio.newSource("assets/sfx/hit6.wav", "static")
 
 local selectedButton = 0
-local TOTAL_BUTTONS = 1
+local TOTAL_BUTTONS = 2
+
+local BUTTON_WIDTH = 130
+local BUTTON_HEIGHT = 40
 
 function mainMenu.load( ... )
   -- body
@@ -23,6 +26,29 @@ function mainMenu.draw( ... )
 
   love.graphics.setColor(colors.black)
   love.graphics.print("Nokia Pong", 150, 30)
+
+  if selectedButton == 0 then
+    love.graphics.rectangle(
+      "line",
+      140,
+      120,
+      BUTTON_WIDTH,
+      BUTTON_HEIGHT
+    )
+  end
+  love.graphics.print("START GAME", 150, 120)
+
+
+  if selectedButton == 1 then
+    love.graphics.rectangle(
+      "line",
+      140,
+      170,
+      BUTTON_WIDTH,
+      BUTTON_HEIGHT
+    )
+  end
+  love.graphics.print("EXIT", 185, 170)
 end
 
 function mainMenu.keypressed(key)
