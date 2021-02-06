@@ -4,7 +4,7 @@ function love.conf(t)
   t.identity = nil -- save directory (string)
   t.author = 'felipeViana'
   t.accelerometerjoystick = false
-  t.title = "Game name"
+  t.title = "Nokia Pong"
   t.version = "11.3"
   t.console = true
 
