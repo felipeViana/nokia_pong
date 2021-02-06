@@ -26,9 +26,10 @@ local BALL_STARTING_SPEED_X = 100
 local BALL_STARTING_SPEED_Y = 70
 local ballX = 70
 local ballY = 120
-local ballSpeedX = BALL_STARTING_SPEED_X
+local ballSpeedX = 3 * BALL_STARTING_SPEED_X
 local ballSpeedY =  - BALL_STARTING_SPEED_Y
 local BALL_SIZE = 14
+local BALL_MAX_SPEED = 1000
 
 local BALL_SPEED_INCREASE_FACTOR = 1.3
 
@@ -87,29 +88,32 @@ function pong.update( dt )
   local nextBallY = ballY + ballSpeedY * dt
 
   -- colliding with enemy
-  if ballSpeedX > 0 and nextBallX + BALL_SIZE >= enemyX and nextBallX + BALL_SIZE <= enemyX + PAD_WIDTH then
-    if nextBallY >= enemyY - BALL_SIZE and nextBallY <= enemyY + PAD_HEIGHT then
+  if ballSpeedX > 0 then
+    if ballX + BALL_SIZE <= enemyX and nextBallX + BALL_SIZE > enemyX and nextBallY + BALL_SIZE >= enemyY and nextBallY <= enemyY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
-      ballSpeedY = (ballSpeedY - enemySpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
+      ballSpeedY = (ballSpeedY - enemySpeedY / 2) * BALL_SPEED_INCREASE_FACTOR
       soundManager.play(hitSound)
     end
   end
 
   -- colliding with player
-  if ballSpeedX < 0 and nextBallX <= playerX + PAD_WIDTH and nextBallX >= playerX  then
-    if nextBallY >= playerY - BALL_SIZE and nextBallY <= playerY + PAD_HEIGHT then
+  if ballSpeedX < 0 then
+    if ballX >= playerX + PAD_WIDTH and nextBallX < playerX + PAD_WIDTH and nextBallY + BALL_SIZE >= playerY and nextBallY + BALL_SIZE <= playerY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
-      ballSpeedY = (ballSpeedY - playerSpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
+      ballSpeedY = (ballSpeedY - playerSpeedY / 2) * BALL_SPEED_INCREASE_FACTOR
       soundManager.play(hitSound)
     end
   end
 
+  ballSpeedX = utils.clamp(ballSpeedX, -BALL_MAX_SPEED, BALL_MAX_SPEED)
+  ballSpeedY = utils.clamp(ballSpeedY, -BALL_MAX_SPEED, BALL_MAX_SPEED)
+
   -- AI movement
   if ballSpeedX > 0 and ballX > windowWidth / 2 then
     if ballY + BALL_SIZE / 2 > enemyY + PAD_HEIGHT / 2 then
-      enemySpeedY = PAD_SPEED / 2
+      enemySpeedY = PAD_SPEED
     else
-      enemySpeedY = - PAD_SPEED / 2
+      enemySpeedY = - PAD_SPEED
     end
   else
     enemySpeedY = 0
