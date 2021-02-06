@@ -160,7 +160,6 @@ function pong.update( dt )
   if playerScore > 2 then
     sceneManager.changeScene(require 'src/shooter')
   end
-
   if enemyScore > 0 then
     sceneManager.changeScene(require 'src/gameOver', 'pong')
   end

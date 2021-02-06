@@ -12,11 +12,14 @@ local BUTTON_RECTANGLE_X = 140
 local BUTTON_Y = 120
 
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
+local gameOverSound = love.audio.newSource("assets/sfx/negative1.wav", "static")
 
 local currentGame = ''
 
 function gameOver.load( game )
   currentGame = game
+
+  soundManager.play(gameOverSound)
 end
 
 function gameOver.update( dt )
