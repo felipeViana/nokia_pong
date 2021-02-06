@@ -89,16 +89,15 @@ function pong.update( dt )
   if ballSpeedX > 0 and nextBallX + BALL_SIZE >= enemyX and nextBallX + BALL_SIZE <= enemyX + PAD_WIDTH then
     if nextBallY >= enemyY - BALL_SIZE and nextBallY <= enemyY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
-      ballSpeedY = ballSpeedY * BALL_SPEED_INCREASE_FACTOR
+      ballSpeedY = (ballSpeedY - enemySpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
     end
-  -- elseif  then
   end
 
   -- colliding with player
   if ballSpeedX < 0 and nextBallX <= playerX + PAD_WIDTH and nextBallX >= playerX  then
     if nextBallY >= playerY - BALL_SIZE and nextBallY <= playerY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
-      ballSpeedY = ballSpeedY * BALL_SPEED_INCREASE_FACTOR
+      ballSpeedY = (ballSpeedY - playerSpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
     end
   end
 
