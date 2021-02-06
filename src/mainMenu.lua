@@ -27,7 +27,6 @@ end
 function mainMenu.draw( ... )
   utils.clearScreen()
 
-  love.graphics.setColor(colors.black)
   love.graphics.print("Nokia Pong", 150, 10)
 
   if selectedButton == 0 then

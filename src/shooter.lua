@@ -18,7 +18,6 @@ end
 function shooter.draw( ... )
   utils.clearScreen()
 
-  love.graphics.setColor(colors.black)
   love.graphics.print("shooter game", 150, 30)
 end
 

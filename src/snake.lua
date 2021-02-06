@@ -18,7 +18,6 @@ end
 function snake.draw( ... )
   utils.clearScreen()
 
-  love.graphics.setColor(colors.black)
   love.graphics.print("snake game", 150, 30)
 end
 

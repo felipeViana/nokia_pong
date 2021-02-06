@@ -11,6 +11,8 @@ function utils.clearScreen( ... )
     84 * SCALING_FACTOR,
     48 * SCALING_FACTOR
   )
+
+  love.graphics.setColor(colors.black)
 end
 
 return utils

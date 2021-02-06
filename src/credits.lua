@@ -22,7 +22,6 @@ end
 function credits.draw( ... )
   utils.clearScreen()
 
-  love.graphics.setColor(colors.black)
   love.graphics.print("CREDITS", 165, 10)
 
 
