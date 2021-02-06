@@ -28,8 +28,7 @@ end
 function mainMenu.keypressed(key)
   if key == 'space' then
     soundManager.playSound(selectSound)
-
-    -- selectedButtonCallback()
+    sceneManager.changeScene(require 'src/pong')
   end
 
   if key == 'escape' then

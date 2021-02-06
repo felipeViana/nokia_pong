@@ -3,29 +3,34 @@ local utils = require 'utils'
 local sceneManager = require 'src/sceneManager'
 local soundManager = require 'soundManager'
 
-local pong = {}
+local shooter = {}
 
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 
-function pong.load( ... )
+function shooter.load( ... )
   -- body
 end
 
-function pong.update( dt )
+function shooter.update( dt )
   -- body
 end
 
-function pong.draw( ... )
+function shooter.draw( ... )
   utils.clearScreen()
 
   love.graphics.setColor(colors.black)
-  love.graphics.print("Pong game", 150, 30)
+  love.graphics.print("shooter game", 150, 30)
 end
 
-function pong.keypressed( key )
+function shooter.keypressed( key )
+  if key == 'space' then
+    soundManager.playSound(selectSound)
+    sceneManager.changeScene(require 'src/breakout')
+  end
+
   if key == 'escape' then
     love.event.quit(0)
   end
 end
 
-return pong
+return shooter
