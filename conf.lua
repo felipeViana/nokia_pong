@@ -1,4 +1,8 @@
+NOKIA_WIDTH = 84
+NOKIA_HEIGHT = 48
 SCALING_FACTOR = 5
+windowWidth = NOKIA_WIDTH * SCALING_FACTOR
+windowHeight = NOKIA_HEIGHT * SCALING_FACTOR
 
 function love.conf(t)
   t.identity = nil -- save directory (string)
@@ -8,8 +12,8 @@ function love.conf(t)
   t.version = "11.3"
   t.console = true
 
-  t.window.width = 84 * SCALING_FACTOR
-  t.window.height = 48 * SCALING_FACTOR
+  t.window.width = windowWidth
+  t.window.height = windowHeight
   t.window.fullscreen = false
   -- t.window.icon = "assets/logo.png"
   t.window.borderless = false
