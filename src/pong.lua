@@ -17,12 +17,13 @@ local playerSpeedY = 0
 
 local enemyX = windowWidth - PAD_WIDTH - 50
 local enemyY = 70
+local enemySpeedY = 0
 
 local playerScore = 0
 local enemyScore = 0
 
 local BALL_STARTING_SPEED_X = 100
-local BALL_STARTING_SPEED_Y = 90
+local BALL_STARTING_SPEED_Y = 70
 local ballX = 70
 local ballY = 120
 local ballSpeedX = BALL_STARTING_SPEED_X
@@ -101,6 +102,26 @@ function pong.update( dt )
     end
   end
 
+  -- AI movement
+  if ballSpeedX > 0 and ballX > windowWidth / 2 then
+    if ballY + BALL_SIZE / 2 > enemyY + PAD_HEIGHT / 2 then
+      enemySpeedY = PAD_SPEED
+    else
+      enemySpeedY = - PAD_SPEED
+    end
+  else
+    enemySpeedY = 0
+  end
+
+  enemyY = enemyY + enemySpeedY * dt
+  if enemyY < 0 then
+    enemyY = 0
+  end
+  if enemyY > windowHeight - PAD_HEIGHT then
+    enemyY = windowHeight - PAD_HEIGHT
+  end
+
+
   ballX = nextBallX
   ballY = nextBallY
 
@@ -137,8 +158,8 @@ function pong.draw( ... )
     'fill',
     ballX,
     ballY,
-    14,
-    14
+    BALL_SIZE,
+    BALL_SIZE
   )
 
   love.graphics.rectangle(
