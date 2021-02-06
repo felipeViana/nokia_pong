@@ -6,14 +6,13 @@ local soundManager = require 'soundManager'
 local mainMenu = {}
 
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
-local changeSound = love.audio.newSource("assets/sfx/hit6.wav", "static")
+local changeSound = love.audio.newSource("assets/sfx/blip1.wav", "static")
 
 local selectedButton = 0
 local TOTAL_BUTTONS = 3
 
 local BUTTON_WIDTH = 130
 local BUTTON_HEIGHT = 40
-
 local BUTTON_RECTANGLE_X = 140
 
 local BUTTON_1_Y = 80
@@ -67,7 +66,7 @@ function mainMenu.draw( ... )
 end
 
 function mainMenu.keypressed(key)
-  if key == 'space' then
+  if key == 'space' or key == 'return' then
     soundManager.playSound(selectSound)
 
     if selectedButton == 0 then
