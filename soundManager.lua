@@ -1,7 +1,7 @@
 local soundManager = {}
 
 local sources = {}
-function soundManager.playSound(source)
+function soundManager.play(source)
   -- remove all playing sounds
   for _, s in pairs(sources) do
     sources[s]:stop()

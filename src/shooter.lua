@@ -23,7 +23,7 @@ end
 
 function shooter.keypressed( key )
   if key == 'space' then
-    soundManager.playSound(selectSound)
+    soundManager.play(selectSound)
     sceneManager.changeScene(require 'src/breakout')
   end
 

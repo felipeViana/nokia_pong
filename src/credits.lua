@@ -42,7 +42,7 @@ end
 
 function credits.keypressed( key )
   if key == 'space' or key == 'return' then
-    soundManager.playSound(selectSound)
+    soundManager.play(selectSound)
     sceneManager.changeScene(require 'src/mainMenu')
   end
 

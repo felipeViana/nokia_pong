@@ -32,8 +32,9 @@ local BALL_SIZE = 14
 
 local BALL_SPEED_INCREASE_FACTOR = 1.3
 
+local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
+
 function pong.load( ... )
-  -- body
 end
 
 local function centerBall()
@@ -90,6 +91,7 @@ function pong.update( dt )
     if nextBallY >= enemyY - BALL_SIZE and nextBallY <= enemyY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
       ballSpeedY = (ballSpeedY - enemySpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
+      soundManager.play(hitSound)
     end
   end
 
@@ -98,15 +100,16 @@ function pong.update( dt )
     if nextBallY >= playerY - BALL_SIZE and nextBallY <= playerY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
       ballSpeedY = (ballSpeedY - playerSpeedY / 3) * BALL_SPEED_INCREASE_FACTOR
+      soundManager.play(hitSound)
     end
   end
 
   -- AI movement
   if ballSpeedX > 0 and ballX > windowWidth / 2 then
     if ballY + BALL_SIZE / 2 > enemyY + PAD_HEIGHT / 2 then
-      enemySpeedY = PAD_SPEED
+      enemySpeedY = PAD_SPEED / 2
     else
-      enemySpeedY = - PAD_SPEED
+      enemySpeedY = - PAD_SPEED / 2
     end
   else
     enemySpeedY = 0
@@ -171,6 +174,10 @@ function pong.draw( ... )
 end
 
 function pong.keypressed( key )
+  if key == 'space' then
+    soundManager.play(hitSound)
+  end
+
   if key == 'escape' then
     love.event.quit(0)
   end

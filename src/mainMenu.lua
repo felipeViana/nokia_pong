@@ -66,7 +66,7 @@ end
 
 function mainMenu.keypressed(key)
   if key == 'space' or key == 'return' then
-    soundManager.playSound(selectSound)
+    soundManager.play(selectSound)
 
     if selectedButton == 0 then
       sceneManager.changeScene(require 'src/pong')
@@ -79,12 +79,12 @@ function mainMenu.keypressed(key)
 
   if key == 'up' or key == 'w' then
     selectedButton = (selectedButton + TOTAL_BUTTONS - 1) % TOTAL_BUTTONS
-    soundManager.playSound(changeSound)
+    soundManager.play(changeSound)
   end
 
   if key == 'down' or key == 's' then
     selectedButton = (selectedButton + 1) % TOTAL_BUTTONS
-    soundManager.playSound(changeSound)
+    soundManager.play(changeSound)
   end
 end
 
