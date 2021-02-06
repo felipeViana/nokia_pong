@@ -45,10 +45,6 @@ function credits.keypressed( key )
     soundManager.play(selectSound)
     sceneManager.changeScene(require 'src/mainMenu')
   end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return credits

@@ -82,15 +82,6 @@ function pong.update( dt )
     playerSpeedY = 0
   end
 
-  playerY = playerY + playerSpeedY * dt
-
-  if playerY < 0 then
-    playerY = 0
-  end
-  if playerY > windowHeight - PAD_HEIGHT then
-    playerY = windowHeight - PAD_HEIGHT
-  end
-
   -- ball
   if ballY < 0 and ballSpeedY < 0 then
     ballSpeedY = - ballSpeedY
@@ -122,6 +113,16 @@ function pong.update( dt )
 
   ballSpeedX = utils.clamp(ballSpeedX, -BALL_MAX_SPEED, BALL_MAX_SPEED)
   ballSpeedY = utils.clamp(ballSpeedY, -BALL_MAX_SPEED, BALL_MAX_SPEED)
+
+
+  playerY = playerY + playerSpeedY * dt
+
+  if playerY < 0 then
+    playerY = 0
+  end
+  if playerY > windowHeight - PAD_HEIGHT then
+    playerY = windowHeight - PAD_HEIGHT
+  end
 
   -- AI movement
   if ballSpeedX > 0 and ballX > windowWidth / 2 then
@@ -157,10 +158,11 @@ function pong.update( dt )
     centerBall()
   end
 
-  if playerScore > 2 then
-    sceneManager.changeScene(require 'src/shooter')
+  if playerScore > 0 then
+    sceneManager.changeScene(require 'src/winTheGame')
+    -- sceneManager.changeScene(require 'src/shooter')
   end
-  if enemyScore > 0 then
+  if enemyScore > 2 then
     sceneManager.changeScene(require 'src/gameOver', 'pong')
   end
 end
@@ -193,16 +195,6 @@ function pong.draw( ... )
     PAD_WIDTH,
     PAD_HEIGHT
   )
-end
-
-function pong.keypressed( key )
-  if key == 'space' then
-    soundManager.play(hitSound)
-  end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return pong

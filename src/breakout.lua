@@ -27,10 +27,6 @@ function breakout.keypressed( key )
     soundManager.play(selectSound)
     sceneManager.changeScene(require 'src/snake')
   end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return breakout

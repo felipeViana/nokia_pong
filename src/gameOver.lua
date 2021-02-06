@@ -49,10 +49,6 @@ function gameOver.keypressed( key )
       sceneManager.changeScene(pong)
     end
   end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return gameOver
