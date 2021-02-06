@@ -36,6 +36,21 @@ local BALL_SPEED_INCREASE_FACTOR = 1.3
 local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 
 function pong.load( ... )
+  playerScore = 0
+  enemyScore = 0
+
+  playerX = 50
+  playerY = 70
+  playerSpeedY = 0
+
+  enemyX = windowWidth - PAD_WIDTH - 50
+  enemyY = 70
+  enemySpeedY = 0
+
+  ballX = 70
+  ballY = 120
+  ballSpeedX = 3 * BALL_STARTING_SPEED_X
+  ballSpeedY =  - BALL_STARTING_SPEED_Y
 end
 
 local function centerBall()
@@ -144,6 +159,10 @@ function pong.update( dt )
 
   if playerScore > 2 then
     sceneManager.changeScene(require 'src/shooter')
+  end
+
+  if enemyScore > 0 then
+    sceneManager.changeScene(require 'src/gameOver', 'pong')
   end
 end
 
