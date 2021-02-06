@@ -104,7 +104,7 @@ function pong.update( dt )
 
   -- colliding with player
   if ballSpeedX < 0 then
-    if ballX >= playerX + PAD_WIDTH and nextBallX < playerX + PAD_WIDTH and nextBallY + BALL_SIZE >= playerY and nextBallY + BALL_SIZE <= playerY + PAD_HEIGHT then
+    if ballX >= playerX + PAD_WIDTH and nextBallX < playerX + PAD_WIDTH and nextBallY + BALL_SIZE * 4/3 >= playerY and nextBallY - BALL_SIZE * 1/3 <= playerY + PAD_HEIGHT then
       ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
       ballSpeedY = (ballSpeedY - playerSpeedY / 2) * BALL_SPEED_INCREASE_FACTOR
       soundManager.play(hitSound)
