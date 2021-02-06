@@ -21,14 +21,35 @@ local enemyY = 70
 local playerScore = 0
 local enemyScore = 0
 
+local BALL_STARTING_SPEED_X = 100
+local BALL_STARTING_SPEED_Y = 90
 local ballX = 70
 local ballY = 120
-local ballSpeedX = 150
-local ballSpeedY =  - 150
+local ballSpeedX = BALL_STARTING_SPEED_X
+local ballSpeedY =  - BALL_STARTING_SPEED_Y
 local BALL_SIZE = 14
+
+local BALL_SPEED_INCREASE_FACTOR = 1.3
 
 function pong.load( ... )
   -- body
+end
+
+local function centerBall()
+  ballX = windowWidth / 2 - BALL_SIZE / 2
+  ballY = windowHeight / 2 - BALL_SIZE / 2
+
+  if ballSpeedX > 0 then
+    ballSpeedX = - BALL_STARTING_SPEED_X
+  else
+    ballSpeedX = BALL_STARTING_SPEED_X
+  end
+
+  if ballSpeedY > 0 then
+    ballSpeedY = - BALL_STARTING_SPEED_Y
+  else
+    ballSpeedY = BALL_STARTING_SPEED_Y
+  end
 end
 
 function pong.update( dt )
@@ -52,16 +73,50 @@ function pong.update( dt )
     playerY = windowHeight - PAD_HEIGHT
   end
 
-
   -- ball
-  ballX = ballX + ballSpeedX * dt
-  ballY = ballY + ballSpeedY * dt
-
   if ballY < 0 and ballSpeedY < 0 then
     ballSpeedY = - ballSpeedY
   end
   if ballY > windowHeight - BALL_SIZE and ballSpeedY > 0 then
     ballSpeedY = - ballSpeedY
+  end
+
+  local nextBallX = ballX + ballSpeedX * dt
+  local nextBallY = ballY + ballSpeedY * dt
+
+  -- colliding with enemy
+  if ballSpeedX > 0 and nextBallX + BALL_SIZE >= enemyX and nextBallX + BALL_SIZE <= enemyX + PAD_WIDTH then
+    if nextBallY >= enemyY - BALL_SIZE and nextBallY <= enemyY + PAD_HEIGHT then
+      ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
+      ballSpeedY = ballSpeedY * BALL_SPEED_INCREASE_FACTOR
+    end
+  -- elseif  then
+  end
+
+  -- colliding with player
+  if ballSpeedX < 0 and nextBallX <= playerX + PAD_WIDTH and nextBallX >= playerX  then
+    if nextBallY >= playerY - BALL_SIZE and nextBallY <= playerY + PAD_HEIGHT then
+      ballSpeedX = - (ballSpeedX * BALL_SPEED_INCREASE_FACTOR)
+      ballSpeedY = ballSpeedY * BALL_SPEED_INCREASE_FACTOR
+    end
+  end
+
+  ballX = nextBallX
+  ballY = nextBallY
+
+  -- ball goes out
+  if ballX > windowWidth then
+    playerScore = playerScore + 1
+    centerBall()
+  end
+
+  if ballX < 0 - BALL_SIZE then
+    enemyScore = enemyScore + 1
+    centerBall()
+  end
+
+  if playerScore > 2 then
+    sceneManager.changeScene(require 'src/shooter')
   end
 end
 
