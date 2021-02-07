@@ -173,6 +173,10 @@ function breakout.update( dt )
   if lives < 1 then
     sceneManager.changeScene(require 'src/gameOver', 'breakout')
   end
+
+  if #bricks < 1 then
+    sceneManager.changeScene(require 'src/winTheGame')
+  end
 end
 
 function breakout.draw( ... )

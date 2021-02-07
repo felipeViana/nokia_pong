@@ -17,7 +17,6 @@ function winTheGame.draw( ... )
   utils.clearScreen()
 
   love.graphics.print("THANKS FOR PLAYING!", 110, 10)
-
   love.graphics.print("Have a nice day", 130, 50)
 
   love.graphics.print("Press ESC to exit", 130, 170)
