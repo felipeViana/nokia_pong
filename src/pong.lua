@@ -158,9 +158,8 @@ function pong.update( dt )
     centerBall()
   end
 
-  if playerScore > 0 then
-    sceneManager.changeScene(require 'src/winTheGame')
-    -- sceneManager.changeScene(require 'src/shooter')
+  if playerScore > 2 then
+    sceneManager.changeScene(require 'src/breakout')
   end
   if enemyScore > 2 then
     sceneManager.changeScene(require 'src/gameOver', 'pong')
