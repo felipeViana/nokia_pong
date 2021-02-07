@@ -7,6 +7,7 @@ local breakout = {}
 
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
+local padHitSound = love.audio.newSource("assets/sfx/blip8.wav", "static")
 
 local PAD_SPEED = 200
 local PAD_WIDTH = 80
@@ -23,7 +24,7 @@ local ballVelocityY = - 100
 
 local BRICK_WIDTH = 80
 local BRICK_HEIGHT = 20
--- brick table
+local bricks = {}
 
 function breakout.load( ... )
   padX = 170
@@ -36,9 +37,15 @@ function breakout.load( ... )
   ballVelocityY = - 100
 
   -- revive bricks
+  bricks = {}
+  for x = 50, 320, BRICK_WIDTH do
+    for y = 30, 110, BRICK_HEIGHT do
+      table.insert(bricks, {["x"] = x, ['y'] = y})
+    end
+  end
 end
 
-local function collideBallRectangle( nextBallX, nextBallY, recX, recY, recWidth, recHeigth )
+local function collideBallRectangle( ballX, ballY, nextBallX, nextBallY, recX, recY, recWidth, recHeigth )
   local nextBallCenterX = nextBallX + BALL_SIZE / 2
   local nextBallCenterY = nextBallY + BALL_SIZE / 2
 
@@ -79,7 +86,6 @@ function breakout.update( dt )
   local nextBallX = ballX + ballVelocityX * dt
   local nextBallY = ballY + ballVelocityY * dt
 
-
   -- ball colliding with walls
   if nextBallY < 0 then
     ballVelocityY = - ballVelocityY
@@ -98,10 +104,16 @@ function breakout.update( dt )
   end
 
   -- ball colliding with player pad
-  collideBallRectangle(nextBallX, nextBallY, padX - 5, padY - 5, PAD_WIDTH + 10, PAD_HEIGHT + 10)
+  if collideBallRectangle(ballX, ballY, nextBallX, nextBallY, padX - 5, padY - 5, PAD_WIDTH + 10, PAD_HEIGHT + 10) then
+    soundManager.play(padHitSound)
+  end
 
   -- ball colliding with bricks
-
+  for key, brick in ipairs(bricks) do
+    if collideBallRectangle(ballX, ballY, nextBallX, nextBallY, brick.x, brick.y, BRICK_WIDTH, BRICK_HEIGHT) then
+      soundManager.play(padHitSound)
+    end
+  end
 
 
   ballX = ballX + ballVelocityX * dt
@@ -111,17 +123,16 @@ end
 function breakout.draw( ... )
   utils.clearScreen()
 
-  for x = 50, 320, BRICK_WIDTH do
-    for y = 30, 110, BRICK_HEIGHT do
-      love.graphics.rectangle(
-        'line',
-        x,
-        y,
-        BRICK_WIDTH,
-        BRICK_HEIGHT
-      )
-    end
+  for key, brick in ipairs(bricks) do
+    love.graphics.rectangle(
+      'line',
+      brick.x,
+      brick.y,
+      BRICK_WIDTH,
+      BRICK_HEIGHT
+    )
   end
+
 
   love.graphics.rectangle(
     'fill',
