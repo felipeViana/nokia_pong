@@ -3,6 +3,7 @@ local utils = require 'utils'
 local sceneManager = require 'src/sceneManager'
 local soundManager = require 'soundManager'
 local pong = require 'src/pong'
+local breakout = require 'src/breakout'
 
 local gameOver = {}
 
@@ -47,6 +48,8 @@ function gameOver.keypressed( key )
 
     if currentGame == 'pong' then
       sceneManager.changeScene(pong)
+    elseif currentGame == 'breakout' then
+      sceneManager.changeScene(breakout)
     end
   end
 end

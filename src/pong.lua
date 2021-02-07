@@ -6,6 +6,7 @@ local soundManager = require 'soundManager'
 local pong = {}
 
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
+local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 
 local PAD_SPEED = 150
 local PAD_WIDTH = 20
@@ -32,8 +33,6 @@ local BALL_SIZE = 14
 local BALL_MAX_SPEED = 1000
 
 local BALL_SPEED_INCREASE_FACTOR = 1.3
-
-local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 
 function pong.load( ... )
   playerScore = 0
