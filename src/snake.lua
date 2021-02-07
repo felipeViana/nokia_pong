@@ -22,6 +22,9 @@ function snake.draw( ... )
 end
 
 function snake.keypressed( key )
+  if key == 'escape' then
+    love.event.quit(0)
+  end
 end
 
 return snake

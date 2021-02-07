@@ -176,6 +176,7 @@ function breakout.update( dt )
 
   if #bricks < 1 then
     sceneManager.changeScene(require 'src/winTheGame')
+    -- sceneManager.changeScene(require 'src/snake')
   end
 end
 
@@ -210,12 +211,6 @@ function breakout.draw( ... )
     BALL_SIZE,
     BALL_SIZE
   )
-end
-
-function breakout.keypressed( key )
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return breakout
