@@ -8,12 +8,15 @@ local breakout = {}
 local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 local padHitSound = love.audio.newSource("assets/sfx/blip8.wav", "static")
+local brickHitSound = love.audio.newSource("assets/sfx/good3.wav", "static")
 
-local PAD_SPEED = 200
+-- negative2, good3
+
+local PAD_SPEED = 250
 local PAD_WIDTH = 80
 local PAD_HEIGHT = 10
 local padX = 170
-local padY = 200
+local padY = 220
 local padVelocity = 0
 
 local BALL_SIZE = 10
@@ -28,18 +31,18 @@ local bricks = {}
 
 function breakout.load( ... )
   padX = 170
-  padY = 200
+  padY = 220
   padVelocity = 0
 
   ballX = 205
-  ballY = 190
+  ballY = 210
   ballVelocityX = - 100
   ballVelocityY = - 100
 
   -- revive bricks
   bricks = {}
   for x = 50, 320, BRICK_WIDTH do
-    for y = 30, 110, BRICK_HEIGHT do
+    for y = 40, 120, BRICK_HEIGHT do
       table.insert(bricks, {["x"] = x, ['y'] = y})
     end
   end
@@ -55,15 +58,20 @@ local function collideBallRectangle( ballX, ballY, nextBallX, nextBallY, recX, r
   -- check if ball is going inside the rectangle
   if nextBallCenterX >= recX and nextBallCenterX <= recX + recWidth and
   nextBallCenterY >= recY and nextBallCenterY <= recY + recHeigth then
+    local x = false
+    local y = false
+
     if ballCenterX < recX or ballCenterX > recX + recWidth then
-      ballVelocityX = - ballVelocityX
+      -- ballVelocityX = - ballVelocityX
+      x = true
     end
 
     if ballCenterY < recY or ballCenterY > recY + recHeigth then
-      ballVelocityY = - ballVelocityY
+      -- ballVelocityY = - ballVelocityY
+      y = true
     end
 
-    return true
+    return {['x'] = x, ['y'] = y}
   end
 
   return false
@@ -104,17 +112,42 @@ function breakout.update( dt )
   end
 
   -- ball colliding with player pad
-  if collideBallRectangle(ballX, ballY, nextBallX, nextBallY, padX - 5, padY - 5, PAD_WIDTH + 10, PAD_HEIGHT + 10) then
+  local padCollided = collideBallRectangle(ballX, ballY, nextBallX, nextBallY, padX - 5, padY + 5, PAD_WIDTH + 10, PAD_HEIGHT + 5)
+  if padCollided  then
     soundManager.play(padHitSound)
-  end
-
-  -- ball colliding with bricks
-  for key, brick in ipairs(bricks) do
-    if collideBallRectangle(ballX, ballY, nextBallX, nextBallY, brick.x, brick.y, BRICK_WIDTH, BRICK_HEIGHT) then
-      soundManager.play(padHitSound)
+    if padCollided.x then
+      ballVelocityX = - ballVelocityX
+    end
+    if padCollided.y then
+      ballVelocityY = - ballVelocityY
     end
   end
 
+  -- ball colliding with bricks
+  local collidedBricks = {}
+  local shouldTurnX = false
+  local shouldTurnY = false
+
+  for key, brick in ipairs(bricks) do
+    local collided = collideBallRectangle(ballX, ballY, nextBallX, nextBallY, brick.x - 5, brick.y - 5, BRICK_WIDTH + 10, BRICK_HEIGHT + 10)
+    if collided then
+      soundManager.play(brickHitSound)
+      table.insert(collidedBricks, key)
+
+      shouldTurnX = shouldTurnX or collided.x
+      shouldTurnY = shouldTurnY or collided.y
+    end
+  end
+  if shouldTurnX then
+    ballVelocityX = - ballVelocityX
+  end
+  if shouldTurnY then
+    ballVelocityY = - ballVelocityY
+  end
+
+  for i = #collidedBricks, 1, -1 do
+    table.remove(bricks, collidedBricks[i])
+  end
 
   ballX = ballX + ballVelocityX * dt
   ballY = ballY + ballVelocityY * dt
