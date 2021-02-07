@@ -82,7 +82,7 @@ local function resetBall( ... )
   ballX = 205
   ballY = 210
   ballVelocityX = - 100
-  ballVelocityY = - 100
+  ballVelocityY = - 100 - (100 * 0.05) * (20 - #bricks)
 end
 
 function breakout.update( dt )
@@ -163,6 +163,7 @@ function breakout.update( dt )
 
   for i = #collidedBricks, 1, -1 do
     table.remove(bricks, collidedBricks[i])
+    ballVelocityY = ballVelocityY * 1.05
   end
 
   ballVelocityX = utils.clamp(ballVelocityX, -3000, 3000)
