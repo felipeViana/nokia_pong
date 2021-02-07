@@ -10,6 +10,8 @@ local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 local padHitSound = love.audio.newSource("assets/sfx/blip8.wav", "static")
 local brickHitSound = love.audio.newSource("assets/sfx/good3.wav", "static")
 
+local lives = 3
+
 local PAD_SPEED = 250
 local PAD_WIDTH = 80
 local PAD_HEIGHT = 10
@@ -28,6 +30,7 @@ local BRICK_HEIGHT = 20
 local bricks = {}
 
 function breakout.load( ... )
+  lives = 3
   padX = 170
   padY = 220
   padVelocity = 0
@@ -75,6 +78,13 @@ local function collideBallRectangle( ballX, ballY, nextBallX, nextBallY, recX, r
   return false
 end
 
+local function resetBall( ... )
+  ballX = 205
+  ballY = 210
+  ballVelocityX = - 100
+  ballVelocityY = - 100
+end
+
 function breakout.update( dt )
   -- player
   if love.keyboard.isDown('right', 'd') and love.keyboard.isDown('left', 'a') then
@@ -112,7 +122,8 @@ function breakout.update( dt )
     soundManager.play(hitSound)
   end
   if nextBallY > windowHeight then
-    sceneManager.changeScene(require 'src/gameOver', 'breakout')
+    lives = lives - 1
+    resetBall()
   end
 
   -- ball colliding with player pad
@@ -124,6 +135,7 @@ function breakout.update( dt )
     end
     if padCollided.y then
       ballVelocityY = - ballVelocityY
+      ballVelocityX = ballVelocityX - padVelocity / 4
     end
   end
 
@@ -153,12 +165,20 @@ function breakout.update( dt )
     table.remove(bricks, collidedBricks[i])
   end
 
+  ballVelocityX = utils.clamp(ballVelocityX, -3000, 3000)
+
   ballX = ballX + ballVelocityX * dt
   ballY = ballY + ballVelocityY * dt
+
+  if lives < 1 then
+    sceneManager.changeScene(require 'src/gameOver', 'breakout')
+  end
 end
 
 function breakout.draw( ... )
   utils.clearScreen()
+
+  love.graphics.print("LIVES: " .. lives - 1, 5, 0)
 
   for key, brick in ipairs(bricks) do
     love.graphics.rectangle(
