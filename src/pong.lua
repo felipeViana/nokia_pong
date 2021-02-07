@@ -126,9 +126,9 @@ function pong.update( dt )
   -- AI movement
   if ballSpeedX > 0 and ballX > windowWidth / 2 then
     if ballY + BALL_SIZE / 2 > enemyY + PAD_HEIGHT / 2 then
-      enemySpeedY = PAD_SPEED
+      enemySpeedY = PAD_SPEED * 3/4
     else
-      enemySpeedY = - PAD_SPEED
+      enemySpeedY = - PAD_SPEED * 3/4
     end
   else
     enemySpeedY = 0
