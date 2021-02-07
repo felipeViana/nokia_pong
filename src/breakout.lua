@@ -10,8 +10,6 @@ local hitSound = love.audio.newSource("assets/sfx/blip4.wav", "static")
 local padHitSound = love.audio.newSource("assets/sfx/blip8.wav", "static")
 local brickHitSound = love.audio.newSource("assets/sfx/good3.wav", "static")
 
--- negative2, good3
-
 local PAD_SPEED = 250
 local PAD_WIDTH = 80
 local PAD_HEIGHT = 10
@@ -90,6 +88,12 @@ function breakout.update( dt )
   end
 
   padX = padX + padVelocity * dt
+  if padX > windowWidth - PAD_WIDTH then
+    padX = windowWidth - PAD_WIDTH
+  end
+  if padX < 0 then
+    padX = 0
+  end
 
   local nextBallX = ballX + ballVelocityX * dt
   local nextBallY = ballY + ballVelocityY * dt
