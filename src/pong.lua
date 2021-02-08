@@ -32,7 +32,7 @@ local ballSpeedY =  - BALL_STARTING_SPEED_Y
 local BALL_SIZE = 14
 local BALL_MAX_SPEED = 1000
 
-local BALL_SPEED_INCREASE_FACTOR = 1.3
+local BALL_SPEED_INCREASE_FACTOR = 1.1
 
 function pong.load( ... )
   playerScore = 0
