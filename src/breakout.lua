@@ -176,8 +176,7 @@ function breakout.update( dt )
   end
 
   if #bricks < 1 then
-    sceneManager.changeScene(require 'src/winTheGame')
-    -- sceneManager.changeScene(require 'src/snake')
+    sceneManager.changeScene(require 'src/snake')
   end
 end
 
