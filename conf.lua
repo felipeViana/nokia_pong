@@ -37,4 +37,6 @@ function love.conf(t)
   t.modules.thread = false
   t.modules.touch = false
   t.modules.video = false
+
+  math.randomseed(os.time())
 end

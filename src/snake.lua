@@ -5,13 +5,10 @@ local soundManager = require 'soundManager'
 
 local snake = {}
 
-local selectSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
+local foodSound = love.audio.newSource("assets/sfx/good3.wav", "static")
+local turnSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 
-local snake = {
-  {['x'] = 50, ['y'] = 50},
-  {['x'] = 40, ['y'] = 50},
-  {['x'] = 30, ['y'] = 50},
-}
+local snake = {}
 
 local TILE_SIZE = 10
 
@@ -25,8 +22,42 @@ local score = 0
 
 local HUD_HEIGHT = 30
 
+local foodX = 250
+local foodY = 150
+
 function snake.load( ... )
-  -- body
+  snakeDirection = 'right'
+  nextSnakeDirection = 'right'
+  snake = {
+    {['x'] = 50, ['y'] = 50},
+    {['x'] = 40, ['y'] = 50},
+    {['x'] = 30, ['y'] = 50},
+  }
+
+  frame = 0
+  score = 0
+
+  foodX = 250
+  foodY = 150
+end
+
+local function getNearestTile( value )
+  return value - value % TILE_SIZE
+end
+
+local function spawnFood( ... )
+  local foodInsideSnake = true
+  while foodInsideSnake do
+    foodX = getNearestTile(utils.random(0, (windowWidth - TILE_SIZE)/TILE_SIZE) * TILE_SIZE)
+    foodY = getNearestTile(utils.random(HUD_HEIGHT/TILE_SIZE, (windowHeight - TILE_SIZE)/TILE_SIZE) * TILE_SIZE)
+
+    foodInsideSnake = false
+    for i = 1, #snake, 1 do
+      if foodX == snake[i].x and foodY == snake[i].y then
+        foodInsideSnake = true
+      end
+    end
+  end
 end
 
 function snake.update( dt )
@@ -60,6 +91,20 @@ function snake.update( dt )
       snake[1].x = windowWidth - TILE_SIZE
     elseif snake[1].x >= windowWidth then
       snake[1].x = 0
+    end
+
+    for i = 2, #snake, 1 do
+      if snake[1].x == snake[i].x and snake[1].y == snake[i].y then
+        sceneManager.changeScene(require 'src/gameOVer', 'snake')
+      end
+    end
+
+    if snake[1].x == foodX and snake[1].y == foodY then
+      score = score + 5
+      spawnFood()
+      soundManager.play(foodSound)
+
+      table.insert(snake, {['x'] = snake[#snake].x, ['y'] = snake[#snake].y})
     end
 
     frame = 0
@@ -103,10 +148,28 @@ function snake.draw( ... )
     windowWidth,
     HUD_HEIGHT
   )
-
   love.graphics.setColor(colors.white)
   love.graphics.print('SCORE: ' .. score .. '/100', 280, 0 )
   love.graphics.line(0, HUD_HEIGHT, windowWidth, HUD_HEIGHT)
+
+  love.graphics.setColor(colors.black)
+  love.graphics.rectangle(
+    'fill',
+    foodX,
+    foodY,
+    TILE_SIZE,
+    TILE_SIZE
+  )
+  love.graphics.setColor(colors.white)
+  love.graphics.rectangle(
+    'line',
+    foodX,
+    foodY,
+    TILE_SIZE,
+    TILE_SIZE
+  )
+
+  -- love.graphics.setColor(colors.black)
 end
 
 function snake.keypressed( key )

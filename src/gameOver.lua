@@ -4,6 +4,7 @@ local sceneManager = require 'src/sceneManager'
 local soundManager = require 'soundManager'
 local pong = require 'src/pong'
 local breakout = require 'src/breakout'
+local snake = require 'src/snake'
 
 local gameOver = {}
 
@@ -50,6 +51,8 @@ function gameOver.keypressed( key )
       sceneManager.changeScene(pong)
     elseif currentGame == 'breakout' then
       sceneManager.changeScene(breakout)
+    elseif currentGame == 'snake' then
+      sceneManager.changeScene(snake)
     end
   end
 end
