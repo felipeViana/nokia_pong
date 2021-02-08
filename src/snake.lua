@@ -94,7 +94,7 @@ function snake.update( dt )
 
     for i = 2, #snake, 1 do
       if snake[1].x == snake[i].x and snake[1].y == snake[i].y then
-        sceneManager.changeScene(require 'src/gameOVer', 'snake')
+        sceneManager.changeScene(require 'src/gameOver', 'snake')
       end
     end
 
