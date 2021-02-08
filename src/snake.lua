@@ -6,7 +6,6 @@ local soundManager = require 'soundManager'
 local snake = {}
 
 local foodSound = love.audio.newSource("assets/sfx/good3.wav", "static")
-local turnSound = love.audio.newSource("assets/sfx/hit5.wav", "static")
 
 local snake = {}
 

@@ -6,7 +6,7 @@ local defaultFont = love.graphics.newFont(
 
 function love.load( ... )
   love.graphics.setFont(defaultFont)
-  sceneManager.changeScene(require 'src/snake')
+  sceneManager.changeScene(require 'src/mainMenu')
 end
 
 
