@@ -181,10 +181,6 @@ function snake.keypressed( key )
   elseif snakeDirection ~= 'up' and snakeDirection ~= 'down' and (key == 's' or key == 'down') then
     nextSnakeDirection = 'down'
   end
-
-  if key == 'escape' then
-    love.event.quit(0)
-  end
 end
 
 return snake
